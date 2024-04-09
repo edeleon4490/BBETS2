@@ -1,6 +1,6 @@
 ---
 title: "Brownlows Bets"
-author: "Diamond Jim"
+author: "Ever De Leon"
 output: 
   html_document:
     number_sections: true
