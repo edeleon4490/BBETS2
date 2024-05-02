@@ -27,16 +27,16 @@ source(file="BrLw.R")
  At the first day of class there are 35 students in Math Statistics class and professor Brownlow always proposes this bet to his students "I will wager $2 to your bet of $1 that at least two people in today's class have  the same birthday.  He tells me he has made that bet 637 times so far. Where do you think his profits are? Discuss this in a markdown document
  
 Report git commit structure:
-There are 3 questions and there should be at least 3 separate commits, at least one dealing with each of the 3 questions.
-1. What are the fair odds for a bet on matching birthdays in a 35 person class.
-2. For what size class is a 2:1 odds bet fair.
-3. How much money would Brownlow be expected to end up with if the bets went as described.
+There are 3 questions and there should be at least 3 separate commits, at least one dealing with each of the 3 questions.  
+1. What are the fair odds for a bet on matching birthdays in a 35 person class.  
+2. For what size class is a 2:1 odds bet fair.  
+3. How much money would Brownlow be expected to end up with if the bets went as described.  
 
 ## Our strategy is to build a Function and the use it to answer the three questions. 
 
 The function will be given a class_size by number of students, odds, and Number_of_times brownlow made the bet.  It will give you back how much Brownlows earnings were. We will use it to answer our three questions below. If you can, improve this function by giving default values to some of its inputs. 
 
-### Question 1
+## Question 1
 
 In the class and payoff as described, what is the average earnings/losses?
 
@@ -46,30 +46,56 @@ Find the standard deviation and a 95% confidence interval for their earnings
 <!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlow's winnings (or losings)-->
 
  
+### In the class and payoff as described, if you hired 40 brownlow substitute teachers to do the same thing that Brownlow did then.
+
 ```{r}
-nSims=500
-saveResults= matrix(rep(0,nSims))
-# nSim simulations
-for(i in 1:nSims){  
-saveResults[i] = BrLw(35,2,637)  #historical did this 637 times
-}
-hist(saveResults)
-print(paste('mean profit= ', round(mean(saveResults))))
-
-sortedResults = sort(saveResults)
-#95% confidence interval
-lCI = ceiling(sortedResults[0.025*nSims])
-uCI = floor(sortedResults[0.975*nSims])
-print('95% Confidence Interval, average earnings/losses')
-
-print(c(lCI,uCI))
-
+myBrLw <- numeric(1000)
+for(i in 1:1000){
+myBrLw[i] = BrLw()}
 ```
- 
 
 
-### Question 2
-What are the fair odds for a class size of 35 students? Manipulation of odds in the function to tune Brownlow's earnings to zero. 
+```{r}
+favstats(myBrLw)
+```
+
+
+### what is their average earnings
+
+The average earning is `r mean(myBrLw)`
+  
+### the standard deviation and a 95% confidence interval for their earnings?
+    
+I am going to send 100 BrLws to find a 95% confidence interval to see how many of the same students out of a class of 35 have the same birthday. I will sort the earnings from low to high to find a 95% confidence interval on the high and low ends.  
+    
+  
+  
+<!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlows winnings (or losings)-->
+
+```{r}
+options(digits = 2)
+teachers <- numeric(40)
+for (i in 1:40){
+  teachers[i]<-BrLw()}
+fav_stats(teachers) -> profit
+print("we can say that Mr. Brownlows is making an average of")
+print(profit$mean)
+print("The 95% confidence level goes from")
+print(profit$mean-2*profit$sd)
+print("to")
+print(profit$mean+2*profit$sd)
+```
+
+```{r}
+central <- favstats(teachers)
+cat("Mr Brownlow is on average making $",central$mean," over the course of the experiemnt.\n")
+cat("95% Conficence Interval: Low:$",central$mean - 2*central$sd,"- High $", central$mean + 2*central$sd)
+```
+
+
+## Question 2
+
+### What are the fair odds for a class size of 35 students? Manipulation of odds in the function to tune Brownlow's earnings to zero. 
 
 ```{r}
 nSims=500
@@ -91,11 +117,31 @@ print(c(lCI,uCI))
 
 ```
 
+
 <!--Decide on your methods:  In this section explain the approach you will take to attack the issue --- how will you decide on a likely estimate of professor Brownlow's earnings or losses after 637 bets. Also explain how you construct a 95% confidence interval about your estimate of his winnings !-->
 
+```{r}
+teachers <- numeric (1000)
+ for (i in 1:1000){
+   teachers [i] = BrLw(odds=4.38)}
+ favstats(teachers)
+```
 
-### Question 3
-What size of class makes the 2:1 bet fair?  Use manipulation of number of Students to tune Brownlows earnings to zero.
+First we conducted tests on the odds with a sample of 40 teachers. Despite numerous iterations, the odds remained unstable, prompting us to expand the sample to 1000 teachers. Following this increase, we reevaluated the odds. After conducting multiple rounds of testing, we identified the set of odds with a stability factor of 4.38 as the most consistent.
+
+```{r}
+# Create a histogram
+hist(teachers, 
+     main = "teachers Histogram",
+     xlab = "teachers",
+     ylab = "Frequency",
+     col = "skyblue",
+     border = "black")
+```
+
+## Question 3
+
+### What size of class makes the 2:1 bet fair?  Use manipulation of number of Students to tune Brownlows earnings to zero.
 
 
 
