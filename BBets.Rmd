@@ -143,14 +143,21 @@ hist(teachers,
 
 ### What size of class makes the 2:1 bet fair?  Use manipulation of number of Students to tune Brownlows earnings to zero.
 
-
-
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlow's betting profits!-->
 
+```{r}
+teachers <- numeric(40)
+for (i in 1:40){
+  teachers[i]=BrLw(numClass=28)}
+favstats(teachers)
+```
 
+The class size for 2:1 odds to be fair would be 28.
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
 
 Do the results make sense?   Class of 35 and 365 days, shouldn't Dr. Brownlow actually have a loss?  Why/why not
+
+In this write up we were able to discover the manipulation of odds and use trial and error methods to get our expected results. We adjusted the number of teachers from 40 to 1000 maintain a conclusion that satisfies our desired mean number. 
